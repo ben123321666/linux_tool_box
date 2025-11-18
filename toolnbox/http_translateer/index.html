@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>JSON 发送测试</title>
+<style>
+body {
+    font-family: Arial;
+    background: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 80px;
+}
+#container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 8px #aaa;
+    width: 400px;
+}
+textarea {
+    width: 100%;
+    height: 120px;
+    font-size: 14px;
+    padding: 8px;
+}
+button {
+    margin-top: 10px;
+    width: 100%;
+    height: 36px;
+    background: #0078e7;
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+#responseBox {
+    margin-top: 20px;
+    background: #eee;
+    padding: 10px;
+    min-height: 80px;
+    border-radius: 5px;
+    font-family: monospace;
+    white-space: pre-wrap;
+}
+</style>
+</head>
+<body>
+<div id="container">
+    <h2>JSON 消息发送测试</h2>
+    <textarea id="jsonInput">{ "name": "Alice", "age": 20 }</textarea>
+    <button onclick="sendJSON()">发送</button>
+    <div id="responseBox">等待响应...</div>
+</div>
+
+<script>
+async function sendJSON() {
+    const data = document.getElementById("jsonInput").value;
+    const box = document.getElementById("responseBox");
+
+    try {
+        const response = await fetch("http://127.0.0.1:8080", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: data
+        });
+        const result = await response.text();
+        box.textContent = "服务器响应:\n" + result;
+    } catch (err) {
+        box.textContent = "请求失败: " + err;
+    }
+}
+</script>
+</body>
+</html>
